@@ -1,8 +1,8 @@
 output "backend_values" {
-  description = "Use these values to configure the Azure backend in Phase 2."
+  description = "Backend values."
   value = {
-    storage_account_name = azurerm_storage_account.state.name
-    container_name       = azurerm_storage_container.state.name
-    key                  = "terraform.tfstate"
+    storage_account_name = azurerm_storage_account.vault-tfstate.name
+    container_name       = azurerm_storage_container.vault-tfstate.name
+    key                  = "terraform.vault-tfstate"
   }
 }

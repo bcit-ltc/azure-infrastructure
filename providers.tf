@@ -5,7 +5,7 @@ terraform {
   }
 }
 
+# Auth & subscription come from Azure CLI: run `az login` and `az account set --subscription "<SUBSCRIPTION_ID_OR_NAME>"`
 provider "azurerm" {
   features {}
-  # Auth & subscription come from Azure CLI: run `az login` and `az account set --subscription "<SUBSCRIPTION_ID_OR_NAME>"`
 }

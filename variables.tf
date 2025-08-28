@@ -7,24 +7,29 @@ variable "location" {
 variable "resource_group_name" {
   description = "Resource Group name."
   type        = string
-  default     = "rg-tfstate"
+  default     = "vault-tfstate"
 }
 
 variable "storage_account_name" {
   description = "Globally-unique Storage Account name (lowercase, 3–24 chars)."
   type        = string
-  validation {
-    condition     = can(regex("^[a-z0-9]{3,24}$", var.storage_account_name))
-    error_message = "storage_account_name must be 3–24 chars of lowercase letters and numbers."
-  }
 }
 
 variable "container_name" {
-  description = "Blob container name (lowercase letters, numbers, and hyphens)."
+  description = "Blob container name."
   type        = string
-  default     = "tfstate"
-  validation {
-    condition     = can(regex("^[a-z0-9](?:[a-z0-9-]{1,61}[a-z0-9])?$", var.container_name))
-    error_message = "container_name must be 3–63 chars, lowercase letters, numbers, hyphens; start/end alphanumeric."
-  }
+  default     = "vault-tfstate"
+}
+
+# Optional toggles for later applies (RBAC / additional principals)
+variable "additional_principal_ids" {
+  description = "Optional AAD object IDs (users/SPs/workload identities) to grant Blob Data Owner on the container."
+  type        = list(string)
+  default     = []
+}
+
+variable "grant_reader_on_sa" {
+  description = "Also grant Reader on the Storage Account (not usually required)."
+  type        = bool
+  default     = false
 }
