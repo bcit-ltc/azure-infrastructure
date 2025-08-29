@@ -1,5 +1,7 @@
 # Azure Infrastructure
 
+Terraform configurations for Azure.
+
 ## Prerequisites
 
 - Azure CLI
