@@ -1,35 +1,31 @@
+variable "tenant_id" {
+  description = "The Tenant ID for the Azure subscription."
+  type        = string
+}
+
+variable "subscription_id" {
+  description = "The Subscription ID for the Azure subscription."
+  type        = string
+}
+
+variable "resource_group_name" {
+  description = "Resource Group name."
+  type        = string
+  default     = "terraform"
+}
+
 variable "location" {
   description = "Azure region for the RG and Storage Account."
   type        = string
   default     = "canadacentral"
 }
 
-variable "resource_group_name" {
-  description = "Resource Group name."
-  type        = string
-  default     = "vault-tfstate"
-}
-
-variable "storage_account_name" {
-  description = "Globally-unique Storage Account name (lowercase, 3–24 chars)."
-  type        = string
-}
-
 variable "container_name" {
-  description = "Blob container name."
+  description = "Blob container name (lowercase letters, numbers, and hyphens)."
   type        = string
-  default     = "vault-tfstate"
-}
-
-# Optional toggles for later applies (RBAC / additional principals)
-variable "additional_principal_ids" {
-  description = "Optional AAD object IDs (users/SPs/workload identities) to grant Blob Data Owner on the container."
-  type        = list(string)
-  default     = []
-}
-
-variable "grant_reader_on_sa" {
-  description = "Also grant Reader on the Storage Account (not usually required)."
-  type        = bool
-  default     = false
+  validation {
+    condition     = can(regex("^[a-z0-9](?:[a-z0-9-]{1,61}[a-z0-9])?$", var.container_name))
+    error_message = "container_name must be 3–63 chars, lowercase letters, numbers, hyphens; start/end alphanumeric."
+  }
+  default     = "tfstate"
 }

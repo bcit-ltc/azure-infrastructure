@@ -1,6 +1,0 @@
-# Copy to backend.hcl and fill with Phase 1 outputs
-use_azuread_auth     = true
-use_cli              = true
-storage_account_name = "REPLACE_WITH_storage_account_name"
-container_name       = "REPLACE_WITH_container_name"
-key                  = "terraform.tfstate"
