@@ -30,6 +30,8 @@ terraform init
 terraform apply
 
 # Note the outputs printed: storage_account_name, container_name, key
+
+If you need to re-copy the outputs, run `terraform output`.
 ```
 
 ### Migrate local Terraform state to the newly created Azure storage container
