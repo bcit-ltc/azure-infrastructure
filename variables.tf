@@ -15,17 +15,17 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  description = "Azure region for the RG and Storage Account."
+  description = "Azure region for resources."
   type        = string
   default     = "canadacentral"
 }
 
-variable "container_name" {
-  description = "Blob container name (lowercase letters, numbers, and hyphens)."
-  type        = string
-  validation {
-    condition     = can(regex("^[a-z0-9](?:[a-z0-9-]{1,61}[a-z0-9])?$", var.container_name))
-    error_message = "container_name must be 3–63 chars, lowercase letters, numbers, hyphens; start/end alphanumeric."
+# Optional common tags reused by modules
+variable "tags" {
+  description = "Tags to apply to all resources."
+  type        = map(string)
+  default = {
+    project = "infrastructure"
+    managed = "terraform"
   }
-  default     = "tfstate"
 }

@@ -1,23 +1,21 @@
-output "container_meta" {
-  description = "Container metadata"
+output "vault_tfstate" {
+  description = "Vault Terraform state storage details"
   value = {
-    name     = azurerm_resource_group.resource-group.name
-    location = azurerm_resource_group.resource-group.location
+    resource_group_name = module.vault_tfstate.resource_group_name
+    location            = module.vault_tfstate.location
+    storage_account_name= module.vault_tfstate.storage_account_name
+    container_name      = module.vault_tfstate.container_name
+    container_scope     = module.vault_tfstate.container_scope
   }
 }
 
-output "container_name" {
-  value = azurerm_storage_container.storage-container.name
-}
-
-output "storage_account_name" {
-  value = azurerm_storage_account.storage-account.name
-}
-
-output "use_azuread_auth" {
-  value = true
-}
-
-output "use_cli" {
-  value = true
+output "rancher_backup" {
+  description = "Rancher backup storage details"
+  value = {
+    resource_group_name = module.rancher_backup.resource_group_name
+    location            = module.rancher_backup.location
+    storage_account_name= module.rancher_backup.storage_account_name
+    container_name      = module.rancher_backup.container_name
+    container_scope     = module.rancher_backup.container_scope
+  }
 }

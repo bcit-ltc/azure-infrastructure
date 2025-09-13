@@ -1,54 +1,23 @@
-# Azure Infrastructure
+# Azure Storage
 
-Terraform configuration for Azure blob storage.
+This project uses a **generic submodule** `modules/storage-bucket` to provision storage containers:
 
-## Prerequisites
+- `module.vault_tfstate` → creates a new Storage Account + a `tfstate` container
+- `module.rancher_backup` → creates a new Storage Account + a `rancherbackup` container
 
-- Azure CLI
-- Terraform
+Common values (`location`, `resource_group_name`, `tags`) are set once at the root and passed into each module.
 
-## Terraform state
-
-> [Terraform Docs: azurerm backend block](https://developer.hashicorp.com/terraform/language/backend/azurerm)
-> [Azure Docs: Store Terraform state in Azure Storage](https://learn.microsoft.com/en-us/azure/developer/terraform/store-state-in-azure-storage?tabs=azure-cli)
-
-Create a **resource group**, **storage account**, and **private blob container** using a local state file. Then, migrate it to Azure.
-
-Other services managed by Terraform can use this container for state storage as long as unique keys are used for each state.
-
-### Create an Azure storage container with local Terraform state
+## Use
 
 ```bash
-az login
-
-# Set environment variables
-export TF_VAR_tenant_id=$(az account show --query tenantId -o tsv)
-export TF_VAR_subscription_id=$(az account show --query id -o tsv)
-
-# Initialize the project
 terraform init
-terraform apply
-
-# Note the outputs printed: storage_account_name, container_name, key
-
-If you need to re-copy the outputs, run `terraform output`.
+terraform plan -out tfplan
+terraform apply "tfplan"
 ```
 
-### Migrate local Terraform state to the newly created Azure storage container
+## Notes
 
-1. Uncomment the Terraform block in `main.tf` and confirm that `terraform output` matches the block's `azurerm` configuration.
-
-1. Migrate the state file to Azure.
-
-```bash
-terraform init -migrate-state
-```
-
-> Answer the prompt to copy the backend.
-
-## License
-
-This Source Code Form is subject to the terms of the Mozilla Public License, v2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <https://mozilla.org/MPL/2.0/>.
+- Storage Account names get a random 8-char suffix for global uniqueness.
 
 ## About
 
