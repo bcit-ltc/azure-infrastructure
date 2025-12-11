@@ -44,9 +44,11 @@ module "common_cdn_storage" {
   container_name              = "cdn"
   tags                        = local.common.tags
 
-  enable_static_website   = false
-  static_index_document   = "index.html"
-  static_error_document   = "404.html"
+  cors_allowed_origins        = ["*"]
+
+  enable_static_website       = false
+  static_index_document       = "index.html"
+  static_error_document       = "404.html"
 }
 
 module "common_cdn_frontdoor" {
