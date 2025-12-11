@@ -1,9 +1,11 @@
 terraform {
   backend "azurerm" {
-    container_name       = "rancherbackup"
-    storage_account_name = "rancherbki0sz5wd3"
+    container_name       = "tfstate"
+    storage_account_name = "tfstatez55vivoh"
     use_azuread_auth     = true
     use_cli              = true
+
+    key = "azure-infrastructure/terraform.tfstate"
   }
 }
 
