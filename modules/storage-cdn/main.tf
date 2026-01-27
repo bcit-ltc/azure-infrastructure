@@ -13,10 +13,8 @@ terraform {
 
 data "azurerm_client_config" "current" {}
 
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.location
-  tags     = var.tags
+data "azurerm_resource_group" "rg" {
+  name = var.resource_group_name
 }
 
 resource "random_string" "sa" {
@@ -29,8 +27,8 @@ resource "random_string" "sa" {
 
 resource "azurerm_storage_account" "sa" {
   name                     = lower(substr("${var.storage_account_name_prefix}${random_string.sa.result}", 0, 24))
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
+  resource_group_name      = data.azurerm_resource_group.rg.name
+  location                 = data.azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   min_tls_version          = "TLS1_2"
@@ -73,4 +71,3 @@ resource "azurerm_storage_account_static_website" "this" {
   index_document     = var.static_index_document
   error_404_document = var.static_error_document
 }
-
