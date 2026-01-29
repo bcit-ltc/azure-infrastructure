@@ -1,26 +1,26 @@
 output "vault_tfstate" {
   description = "Vault Terraform state storage details"
   value = {
-    resource_group_name  = module.vault_tfstate.resource_group_name
-    location             = module.vault_tfstate.location
-    storage_account_name = module.vault_tfstate.storage_account_name
-    container_name       = module.vault_tfstate.container_name
-    container_scope      = module.vault_tfstate.container_scope
+    resource_group_name  = module.storage_buckets["tfstate"].resource_group_name
+    location             = module.storage_buckets["tfstate"].location
+    storage_account_name = module.storage_buckets["tfstate"].storage_account_name
+    container_name       = module.storage_buckets["tfstate"].container_name
+    container_scope      = module.storage_buckets["tfstate"].container_scope
   }
 }
 
 output "rancher_backup" {
   description = "Rancher backup storage details"
   value = {
-    resource_group_name       = module.rancher_backup.resource_group_name
-    location                  = module.rancher_backup.location
-    storage_account_name      = module.rancher_backup.storage_account_name
-    container_name            = module.rancher_backup.container_name
-    container_scope           = module.rancher_backup.container_scope
-    storage_account_key       = module.rancher_backup.storage_account_key
-    storage_connection_string = module.rancher_backup.storage_connection_string
-    blob_endpoint             = module.rancher_backup.blob_endpoint
-    container_url             = module.rancher_backup.container_url
+    resource_group_name       = module.storage_buckets["rancher"].resource_group_name
+    location                  = module.storage_buckets["rancher"].location
+    storage_account_name      = module.storage_buckets["rancher"].storage_account_name
+    container_name            = module.storage_buckets["rancher"].container_name
+    container_scope           = module.storage_buckets["rancher"].container_scope
+    storage_account_key       = module.storage_buckets["rancher"].storage_account_key
+    storage_connection_string = module.storage_buckets["rancher"].storage_connection_string
+    blob_endpoint             = module.storage_buckets["rancher"].blob_endpoint
+    container_url             = module.storage_buckets["rancher"].container_url
   }
   sensitive = true
 }
@@ -28,15 +28,15 @@ output "rancher_backup" {
 output "longhorn_backup" {
   description = "Longhorn backup storage details"
   value = {
-    resource_group_name       = module.longhorn_backup.resource_group_name
-    location                  = module.longhorn_backup.location
-    storage_account_name      = module.longhorn_backup.storage_account_name
-    container_name            = module.longhorn_backup.container_name
-    container_scope           = module.longhorn_backup.container_scope
-    storage_account_key       = module.longhorn_backup.storage_account_key
-    storage_connection_string = module.longhorn_backup.storage_connection_string
-    blob_endpoint             = module.longhorn_backup.blob_endpoint
-    container_url             = module.longhorn_backup.container_url
+    resource_group_name       = module.storage_buckets["longhorn"].resource_group_name
+    location                  = module.storage_buckets["longhorn"].location
+    storage_account_name      = module.storage_buckets["longhorn"].storage_account_name
+    container_name            = module.storage_buckets["longhorn"].container_name
+    container_scope           = module.storage_buckets["longhorn"].container_scope
+    storage_account_key       = module.storage_buckets["longhorn"].storage_account_key
+    storage_connection_string = module.storage_buckets["longhorn"].storage_connection_string
+    blob_endpoint             = module.storage_buckets["longhorn"].blob_endpoint
+    container_url             = module.storage_buckets["longhorn"].container_url
   }
   sensitive = true
 }

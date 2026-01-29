@@ -5,6 +5,8 @@ pkgs.mkShell {
     terraform
     azure-cli
     jq
+    git
+    nixd
   ];
 
   shellHook = ''

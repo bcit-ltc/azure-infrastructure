@@ -15,6 +15,21 @@ locals {
     resource_group_name = var.resource_group_name
     tags                = var.tags
   }
+
+  storage_buckets = {
+    tfstate = {
+      name_prefix    = "tfstate"
+      container_name = "tfstate"
+    }
+    longhorn = {
+      name_prefix    = "longhorn"
+      container_name = "longhornbackup"
+    }
+    rancher = {
+      name_prefix    = "rancherbk"
+      container_name = "rancherbackup"
+    }
+  }
 }
 
 module "resource_group" {
@@ -25,40 +40,15 @@ module "resource_group" {
   tags     = local.common.tags
 }
 
-module "vault_tfstate" {
-  source = "./modules/storage-bucket"
+module "storage_buckets" {
+  source   = "./modules/storage-bucket"
+  for_each = local.storage_buckets
 
   location                    = local.common.location
   resource_group_name         = module.resource_group.name
-  storage_account_name_prefix = "tfstate"
-  container_name              = "tfstate"
+  storage_account_name_prefix = each.value.name_prefix
+  container_name              = each.value.container_name
   tags                        = local.common.tags
-
-  depends_on = [module.resource_group]
-}
-
-module "longhorn_backup" {
-  source = "./modules/storage-bucket"
-
-  location                    = local.common.location
-  resource_group_name         = module.resource_group.name
-  storage_account_name_prefix = "longhorn"
-  container_name              = "longhornbackup"
-  tags                        = local.common.tags
-
-  depends_on = [module.resource_group]
-}
-
-module "rancher_backup" {
-  source = "./modules/storage-bucket"
-
-  location                    = local.common.location
-  resource_group_name         = module.resource_group.name
-  storage_account_name_prefix = "rancherbk"
-  container_name              = "rancherbackup"
-  tags                        = local.common.tags
-
-  depends_on = [module.resource_group]
 }
 
 module "common_cdn_storage" {
@@ -70,23 +60,19 @@ module "common_cdn_storage" {
   container_name              = "cdn"
   tags                        = local.common.tags
 
-  cors_allowed_origins        = ["*"]
+  cors_allowed_origins = ["*"]
 
-  enable_static_website       = false
-  static_index_document       = "index.html"
-  static_error_document       = "404.html"
-
-  depends_on = [module.resource_group]
+  enable_static_website = false
+  static_index_document = "index.html"
+  static_error_document = "404.html"
 }
 
 module "common_cdn_frontdoor" {
   source = "./modules/frontdoor-cdn"
 
-  resource_group_name = module.resource_group.name
-  profile_name        = "bcit-ltc-commoncdn-afd"
-  endpoint_name       = "bcit-ltc-cdn"
-  blob_primary_host   = module.common_cdn_storage.primary_blob_host
+  resource_group_name  = module.resource_group.name
+  profile_name         = "bcit-ltc-commoncdn-afd"
+  endpoint_name        = "bcit-ltc-cdn"
+  blob_primary_host    = module.common_cdn_storage.primary_blob_host
   storage_account_name = module.common_cdn_storage.storage_account_name
-
-  depends_on = [module.resource_group, module.common_cdn_storage]
 }
